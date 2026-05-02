@@ -1,0 +1,27 @@
+{
+  "products": [
+    {
+      "name": "Jay",
+      "friend": "Veeru",
+      "id": "9fkIC92EQuM",
+      "city": "Ramgudh"
+    },
+    {
+      "name": "Jay",
+      "friend": "Veeru",
+      "id": "OCHvRdIhVPg"
+    },
+    {
+      "name": "Jay",
+      "friend": "Veeru",
+      "id": "5esjDKRrriE"
+    },
+    {
+      "name": "Pen ",
+      "description": "This is a good Pen",
+      "id": "c3jUZAGP1ac"
+    }
+  ],
+  "user": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}
