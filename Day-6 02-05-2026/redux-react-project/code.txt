@@ -1,0 +1,130 @@
+import React from 'react'
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+import Component1 from './Components/Component1';
+import Component2 from './Components/Component2';
+// import { Provider } from 'redux';
+const App = () => {
+  return (
+    <div>
+      <Provider store={store}>
+    <Component2/>
+    <Component1/>
+      </Provider>
+    </div>
+  )
+}
+export default App
+==========================================================
+
+import { applyMiddleware, createStore } from "redux";
+import { reduceruser } from "./Reducer";
+import { thunk } from "redux-thunk";
+// import thunk from "thunk";
+export let store = createStore(reduceruser, applyMiddleware(thunk))
+
+
+
+++=======================================================\
+
+
+let intialState = {user:[]}
+
+import { fetchUser,addUser,pendingUser,removeUser } from "./Action"
+import { apiInstance } from "./AxiosInstance"
+
+export let fetchAPI=  ()=>{
+    return async(dispatch)=>{
+        dispatch(pendingUser)
+        let res = await apiInstance.get("/user")
+        console.log(res);
+        
+        dispatch(fetchUser(res.data))
+    }
+}
+
+export function reduceruser(state=intialState, action){
+    switch(action.type)
+    {
+        case "AddUSER": return 
+        case "PENDING": return {...state, loading:true}
+        case "GetUSER": return{...state, loading:false,user:[...action.payload]} 
+        case "REMOVEUSER":  return 
+        default: return state 
+    }
+}
+
+========================================================
+
+export const addUser = {type:"AddUSER"}
+export const pendingUser = {type:"PENDING"}
+export const fetchUser = (data)=>{
+    return {payload:[...data],type:"GetUSER"}
+}
+export const removeUser = {type:"REMOVEUSER"}
+
+
+======================================================
+import React, { Fragment, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+// import { fetchUser } from '../redux/Action'
+import { fetchAPI } from '../redux/Reducer'
+
+const Component1 = () => {
+    let user= useSelector((prev)=>prev.user)
+    let dispatch = useDispatch()
+    useEffect(()=>{
+            dispatch(fetchAPI())
+    },[])
+    console.log(user);
+    
+  return (
+    <div>
+      { user&&   user.map((v)=>{
+        return <Fragment key={v.id}>
+            <p>
+            {v.name}
+        </p>
+        </Fragment>
+     })}
+    </div>
+  )
+}
+
+export default Component1
+====================================================
+
+
+import React, { useState } from 'react'
+
+const Component2 = () => {
+    let [state,setState] = useState();
+    function handleChange(e){
+        setState(prev=>({...prev, [e.target.name]:e.target.value}))
+    }
+  return (
+    <div>
+     <form onSubmit={(e)=>{
+        e.preventDefault()
+        
+     }}>
+        <div>
+            <input type="text" onChange={(e)=>{ handleChange(e)}} name='userName' />
+        </div>
+        <div>
+            <input type="email" onChange={(e)=>{ handleChange(e)}} name='email' />
+        </div>
+        <div>
+            <input type="password" onChange={(e)=>{ handleChange(e)}} name='password' />
+        </div>
+        <button>Submit</button>
+    </form> 
+    </div>
+  )
+}
+
+export default Component2
+
+
+
+npm i axios redux react-redux redux-thunk json-server
